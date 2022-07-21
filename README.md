@@ -76,7 +76,47 @@ The Blink example code is the hello world of `Arduino` development. Below are th
 
 ![image](https://user-images.githubusercontent.com/58588893/180084797-b20a5154-8939-412a-9946-23b41917eec0.png)<br>
 
+## How does it actually work
 
+Internally, the microcontroller is able to control a digital pin through a peripheral called Digital Input Output
+(DIO). The peripheral consists of 3 registers each 1 byte in size; so we can imagine it as a box with 8 empty slots (bits).
+Each bit is responsible for 1 digital pin.<br><br>
+The `Data Direction Register` controls whether a pin is input or output. If it's output, then it can output HIGH and LOW voltage levels
+(5V and GND). If it's input, then it can be connected to something like a switch and detect when it's on and when it's off.<br><br>
+`The Data Register` is where we decide if we want an output of HIGH(1) or LOW(0) voltage.<br><br>
+`The Input Pins Register` is where the input pins store the detected values. A 1 at bit 6 indicates that Pin6 has detected a HIGH level on it.<br>
+
+![data_direction](https://user-images.githubusercontent.com/58588893/180155970-c129c7d9-4f1b-4ac3-8bda-3a44c8c41cdf.png)
+![data_register](https://user-images.githubusercontent.com/58588893/180155997-932ca72d-56ea-4288-95ff-0ff189c100fe.png)
+![input_pins](https://user-images.githubusercontent.com/58588893/180156022-71dd5c7b-f898-4579-b59a-a5ac748de66c.png)<br>
+
+## All possible combinations for data direction and data registers
+
+
+| Direction Bit | Data Bit | Pin State      |
+| --------------|:--------:|:--------------:|
+| 0             | 0        | Input Floating |
+| 0             | 1        | Input Pull-Up  |
+| 1             | 0        | Output LOW     |
+| 1             | 1        | Output HIGH    |
+
+<br>
+
+## Input Floating vs Input Pull-Up
+
+Suppose we have a button connected to an input pin like the following image.
+If the button is pressed the input pin will be connected to GND and thus detect LOW voltage level and put 0 in its corresponding bit in `Input Pin Register`.
+But if the button is not pressed, the input pin will be connected to air and we won't have a certain prediciton on what it will detect as noise can cause it to detect
+either LOW or HIGH voltage levels.
+
+![input_floating](https://user-images.githubusercontent.com/58588893/180160243-e42def97-675e-44b9-97f3-53bd01e56002.png)<br>
+
+An easy solution to this problem is use a Pull-Up resistance. We put before the button a node connected to VCC and add a resistance so we don't create a short circuit.
+Therefore when the button is not pressed, input pin will detect a HIGH voltage level and when the button is pressed it will detect a LOW voltage level.<br><br>
+
+We don't need to add a Pull-Up resistance ourselves as they are built-in the microcontroller at every input pin. We can activate them by putting 1 in the `Data Register` while the pin is in input mode.
+
+![input_pullup](https://user-images.githubusercontent.com/58588893/180161175-4c7f5b3e-b6e1-40e8-bee5-b1355785e88f.jpg)
 
 
 [Jump back to the top](#table-of-contents)<br>
