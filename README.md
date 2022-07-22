@@ -317,7 +317,7 @@ void loop() {
 
 `Pulse Width Modulation` is a type of modulation that only changes the width of the square signal.
 
-![image](https://user-images.githubusercontent.com/58588893/180481343-769d86d8-c409-4bd3-8a82-78b8c55bb412.png)
+![image](https://user-images.githubusercontent.com/58588893/180489263-c1de8176-134d-4539-8a4c-d0bdad4b79ed.png)
 
 So far we know that we can output 5V or 0V on our digital pins, but can we generate a square signal?
 
@@ -345,6 +345,9 @@ voltage between 0V and 5V.
 IF you are using an `Arduino` Board, any digital pin with the '~' symbol next to the pin number means that is can generate a `PWM` signal. <br>
 We can generate a PWM signal using the function `analogWrite()` which takes the digital pin used as the paramater and duty cycle value from 0 to 255.
 
+
+### Generate constant PWM with 50% duty cycle 
+
 ```cpp
 
 int ledPin = 9;      // LED connected to digital pin 9
@@ -354,11 +357,11 @@ void setup() {
 }
 
 void loop() {
-  analogWrite(ledPin, 128); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
+  analogWrite(ledPin, 127); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
 }
 
 ```
-
+### Create fade in and fade out glow with LED
 
 ```cpp
 
