@@ -340,6 +340,59 @@ voltage between 0V and 5V.
 ![pwm_2](https://user-images.githubusercontent.com/58588893/180486658-7f2cdfea-eab5-4ea0-a0b1-2019c85dda14.png)
 
 
+## Arduino Code
+
+IF you are using an `Arduino` Board, any digital pin with the '~' symbol next to the pin number means that is can generate a `PWM` signal. <br>
+We can generate a PWM signal using the function `analogWrite()` which takes the digital pin used as the paramater and duty cycle value from 0 to 255.
+
+```cpp
+
+int ledPin = 9;      // LED connected to digital pin 9
+
+void setup() {
+  pinMode(ledPin, OUTPUT);  // sets the pin as output
+}
+
+void loop() {
+  analogWrite(ledPin, 128); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
+}
+
+```
+
+
+```cpp
+
+int ledPin = 9;      // LED connected to digital pin 9
+int counter  = 0;
+int flag  = 0;
+void setup() {
+  pinMode(ledPin, OUTPUT);  // sets the pin as output
+}
+
+void loop() {
+  analogWrite(ledPin, counter); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
+  delay(100);
+
+  if (flag == 0) {
+    counter += 1;
+
+  }
+
+  else if (flag == 1) {
+    counter -= 1;
+  }
+
+  if (counter == 0 || counter == 256) {
+
+    flag = !flag;
+
+  }
+
+}
+
+
+
+```
 
 
 
