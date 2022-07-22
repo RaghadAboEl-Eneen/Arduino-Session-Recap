@@ -18,7 +18,7 @@ This is a recap of the Arduino session that is part of Aquaphoton Academy's trai
 <br>
 
 # Introduction to Arduino
-'Arduino' is a tool that helps us control a hardware circuit in the simplest way possible. <br>
+`Arduino` is a tool that helps us control a hardware circuit in the simplest way possible. <br>
 It can refer to two different things: the hardware and the software. <br>
 
 ## Arduino Development Boards
@@ -261,6 +261,56 @@ void loop() {
 ---
 
 # Timers and millis()
+
+A `Timer` is basically an incrementing counter that tells us when it is done counting to a certain point.
+The `Timer` counts in an 8-bit register, meaning it can count from 0 to 255 and everytime it reaches 255 it will give us a signal and start
+counting again from 0.
+
+## Why use timers?
+
+Recall in the Blink Example, we used the `delay()` function to pause for 1 second everytime we blink the LED. While this delay is in progress
+the microcontroller cannot perform any other actions. In other words, it is stuck waiting for this second to pass. Suppose in our Blink program 
+there is also a button that lights up another LED if pressed. If the user presses the button while we are stuck in delay, it will be ignored.
+Now suppose that the `Timer` takes 0.25 seconds to count from 0 to 255, if we count 4 signals given by the `Timer` in total before blinking the LED, 
+then we would have created this 1 second delay without stopping the microcontroller and letting it execute instructions in parallel.
+
+## Timers in Arduino
+In reality, it is not as simple as 0.25 seconds passing every time the `Timer` finishes counting and we need to take into account alot of variables to
+get the delay we need.<br>
+`Arduino` provides us with a function called `millis()` that simply returns the number of milliseconds that passed since the start of the program execution.
+If we call it in `void setup()` and it returns 100 for example, then we would need to wait for it to reach 1100 in the `void loop()` then we would know that 3 seconds have passed.
+
+
+```cpp
+
+unsigned long start_time;
+unsigned long current_time;
+int level = LOW;
+
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(PC13, OUTPUT);
+  
+  start_time = millis()
+  
+}
+
+// the loop function runs over and over again forever
+void loop() {
+
+  current_time = millis();
+  
+  if( (current_time - start_time) >= 1000 ) {
+       level = !level;
+       digitalWrite(LED_BUILTIN, level); 
+       start_time  = current_time;
+  }
+
+
+```
+
+
+
 [Jump back to the top](#table-of-contents)<br>
 ---
 
