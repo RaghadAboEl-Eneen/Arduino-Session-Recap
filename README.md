@@ -278,7 +278,7 @@ then we would have created this 1 second delay without stopping the microcontrol
 In reality, it is not as simple as 0.25 seconds passing every time the `Timer` finishes counting and we need to take into account alot of variables to
 get the delay we need.<br>
 `Arduino` provides us with a function called `millis()` that simply returns the number of milliseconds that passed since the start of the program execution.
-If we call it in `void setup()` and it returns 100 for example, then we would need to wait for it to reach 1100 in the `void loop()` then we would know that 3 seconds have passed.
+If we call it in `void setup()` and it returns 100 for example, then we would need to wait for it to reach 1100 in the `void loop()` then we would know that 1 seconds have passed.
 
 
 ```cpp
@@ -310,11 +310,39 @@ void loop() {
 ```
 
 
-
 [Jump back to the top](#table-of-contents)<br>
 ---
 
 # Pulse Width Modulation PWM
+
+`Pulse Width Modulation` is a type of modulation that only changes the width of the square signal.
+
+![image](https://user-images.githubusercontent.com/58588893/180481343-769d86d8-c409-4bd3-8a82-78b8c55bb412.png)
+
+So far we know that we can output 5V or 0V on our digital pins, but can we generate a square signal?
+
+
+## Generating square signals with timers 
+
+If we configure our timer to toggle a digital output pin everytime it finishes counting, we will get a standard square signal as output.
+
+![pwm_1](https://user-images.githubusercontent.com/58588893/180483258-5a9c33e8-6ab4-4dde-95f4-44ff2c36c351.png)
+
+
+## Generating PWM signals with timers
+
+Timers can also notify us when they reach a certain number. This number is called `compare match value`.
+If we clear the digital pin at the "top" and set the digital pin on compare, a `PWM` signal will be generated.<br>
+Notice that as we lower the compare match value, the duty cycle increases and as we make it higher, the duty cycle decreases thus resulting in an average varying
+voltage between 0V and 5V.
+
+
+![pwm_2](https://user-images.githubusercontent.com/58588893/180486658-7f2cdfea-eab5-4ea0-a0b1-2019c85dda14.png)
+
+
+
+
+
 [Jump back to the top](#table-of-contents)<br>
 ---
 
