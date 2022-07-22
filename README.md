@@ -76,6 +76,22 @@ The Blink example code is the hello world of `Arduino` development. Below are th
 
 ![image](https://user-images.githubusercontent.com/58588893/180084797-b20a5154-8939-412a-9946-23b41917eec0.png)<br>
 
+```cpp
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(PC13, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(PC13, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(PC13, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+```
+
+
 ## How does it actually work
 
 Internally, the microcontroller is able to control a digital pin through a peripheral called Digital Input Output
@@ -123,10 +139,60 @@ We don't need to add a Pull-Up resistance ourselves as they are built-in the mic
 ---
 
 # Digital Input
+
+We can easily use digital input with Pull-Up by using the functions provided by `Arduino`: `pinMode()` and `digitalRead()`
+
+
+```cpp
+void setup() {
+  //start serial connection
+  Serial.begin(9600);
+  //configure pin 2 as an input and enable the internal pull-up resistor
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+
+}
+
+void loop() {
+  //read the pushbutton value into a variable
+  int pushButton = digitalRead(2);
+  //print out the value of the pushbutton
+  Serial.println(pushButton);
+
+  // Keep in mind the pull-up means the pushbutton's logic is inverted. It goes
+  // HIGH when it's open, and LOW when it's pressed. Turn on pin 13 when the
+  // button's pressed, and off when it's not:
+  if (pushButton == HIGH) {
+    digitalWrite(13, LOW);
+  } else {
+    digitalWrite(13, HIGH);
+  }
+
+
+```
+
+
 [Jump back to the top](#table-of-contents)<br>
 ---
 
 # Analog to Digital Converter ADC
+
+The microprocessor inside the micrcontroller can only understand binary data so if we have a sensor that outputs an analog signal it won't be able to work with it.
+This is where Analog to Digital Converters(ADC) come in as they convert signals from analog form to digital form.
+
+## Sampling
+
+The first step is to convert the signal from continuous form to discrete form. This is done by a process called sampling where a sample is taken every time T.
+For example if our signal is 20 seconds and we take a sample every T=1 second then we will have 20 samples in the end that describe the original analog signal.
+
+![image](https://user-images.githubusercontent.com/58588893/180355528-66847759-9531-4612-a556-bf99a001c280.png)
+
+## Quantization
+
+Next we need to combine a range of values to a certain digital level. 
+
+![quantized_1](https://user-images.githubusercontent.com/58588893/180358712-3a41049b-e2bd-4ffa-b777-dc2c91844fad.png)
+
 [Jump back to the top](#table-of-contents)<br>
 ---
 
