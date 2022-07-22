@@ -200,7 +200,7 @@ we will have to approximate our samples to.<br>
 
 ## Binary Encoding
 
-The final step is to encode each level to a binary sequence. Suppose our range is from 0v to 5v, level 1 represents 0v and level 4 represents 5v. We can calculate the step size as 5/4 = 1.25, therefore level 0 = 0~1.25V, level 1 = 1.25~2.5V, level 2 = 2.5~3.75V, level 3 = 3.75~5V. The levels are converted to their binary equivalent and this sequence will be the final output of the `ADC`.
+The final step is to encode each level to a binary sequence. Suppose our range is from 0v to 5v. We can calculate the step size as 5/4 = 1.25, therefore level 0 = 0-1.25V, level 1 = 1.25-2.5V, level 2 = 2.5-3.75V, level 3 = 3.75-5V. The levels are converted to their binary equivalent and this sequence will be the final output of the `ADC`.
 
 
 ![quantized_2](https://user-images.githubusercontent.com/58588893/180362776-c7d3b2f1-9192-4d54-9b8f-73cf2d084380.png)
@@ -216,6 +216,43 @@ The final step is to encode each level to a binary sequence. Suppose our range i
 | f      | 1              | 01              | 2.2          | 1.25           | 
 | g      | 0              | 00              | 1.0          | 0.00           |
 
+
+
+As we can see, there is a big aproximation error between the assigned value and the actual value, this error is more formally called quantization error.
+A simple way to decrease the quantization error is to simply increase the resolution.
+
+
+## Arduino Specifications
+
+The `Arduino` Uno has a resolution of 10 bits, meaning we approximate our samples relative to 1024 levels.<br>
+The reference voltage, which is the maximum analog voltage that can be measured by the 'ADC' is 5V or 3.3V (depends on board).<br>
+The step size can be calculated as `Reference Voltage / (2^resolution)`.
+
+
+## Esp32 Specifications
+
+
+
+## Arduino Code
+
+On the `Arduino` Uno board, pins A0 to A5 can be used as analog input. The function `analogRead()` takes the pin as an argument and returns a value ranging from
+0 to 1023. Note that we do not need to use `pinMode()` when using the analog pins as analog input.
+
+```cpp
+int sensorPin = A0;    // select the input pin for the potentiometer
+int sensorValue = 0;  // variable to store the value coming from the sensor
+
+void setup() {
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);
+  Serial.println(sensorValue);
+}
+```
 
 
 
