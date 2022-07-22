@@ -189,9 +189,36 @@ For example if our signal is 20 seconds and we take a sample every T=1 second th
 
 ## Quantization
 
-Next we need to combine a range of values to a certain digital level. 
+Next we need to combine a range of values to a certain digital level. <br>
+In the following example, we can see that a and b are closest to level 2, e is closest to 3, c and f are closest to 1, and d and g are closest to 0.<br>
+Since there are 4 levels, we can represent each level using 2 bits. These 2 bits are known as the resolution of the `ADC`. The higher the resolution, the more levels
+we will have to approximate our samples to.<br>
 
-![quantized_1](https://user-images.githubusercontent.com/58588893/180358712-3a41049b-e2bd-4ffa-b777-dc2c91844fad.png)
+
+![quantization_1](https://user-images.githubusercontent.com/58588893/180361238-3d4f16eb-c8ac-49c9-ab42-612426ad8c11.png)
+
+
+## Binary Encoding
+
+The final step is to encode each level to a binary sequence. Suppose our range is from 0v to 5v, level 1 represents 0v and level 4 represents 5v. We can calculate the step size as 5/4 = 1.25, therefore level 0 = 0~1.25V, level 1 = 1.25~2.5V, level 2 = 2.5~3.75V, level 3 = 3.75~5V. The levels are converted to their binary equivalent and this sequence will be the final output of the `ADC`.
+
+
+![quantized_2](https://user-images.githubusercontent.com/58588893/180362776-c7d3b2f1-9192-4d54-9b8f-73cf2d084380.png)
+
+
+| Sample | Assigned Level | Binary Sequence | Actual Value | Assigned Value |
+| -------|:--------------:|:---------------:|:------------:|:--------------:|
+| a      | 2              | 10              | 2.7          | 2.50           |
+| b      | 2              | 10              | 3.5          | 2.50           |
+| c      | 1              | 01              | 1.5          | 1.25           |
+| d      | 0              | 00              | 0.9          | 0.00           | 
+| e      | 3              | 11              | 4.5          | 3.75           |
+| f      | 1              | 01              | 2.2          | 1.25           | 
+| g      | 0              | 00              | 1.0          | 0.00           |
+
+
+
+
 
 [Jump back to the top](#table-of-contents)<br>
 ---
