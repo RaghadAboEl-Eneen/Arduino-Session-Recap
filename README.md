@@ -16,7 +16,6 @@ This is a recap of the Arduino session that is part of Aquaphoton Academy's trai
 <br>
 <br>
 <br>
-
 # Introduction to Arduino
 `Arduino` is a tool that helps us control a hardware circuit in the simplest way possible. <br>
 It can refer to two different things: the hardware and the software. <br>
@@ -402,7 +401,7 @@ void loop() {
 [Jump back to the top](#table-of-contents)<br>
 ---
 
-# Serial Communication Universal Asynchronous Receiver/Transmitter UART
+# Serial Communication UART
 
 A communication protocol is a way for two different micrcontrollers (or more) to send and receive information from each other and it consists of a set of rules that the microcontrollers must follow.<br>
 There are many types of communication protocols that we use without noticing, like wifi, usb and ethernet and others that are less commonly known
@@ -413,23 +412,22 @@ like UART, SPI, I2C and CAN.
 We noticed that in most of our programs we used these two functions to display values on the debug screen in the `Arduino` IDE.
 What is actually happening is that a serial `UART` communication is being established between your computer and your microcontroller. 
 
-## What is UARt?
+## What is UART?
 
-`UART` is one of the most famous and commonly used communication protocols in microcontrollers. A standerd data frame transmitted by the microcontroller using its set 
-of rules generally looks like this:
+Short for Universal Asynchronous Receiver/Transmitter, `UART` is one of the most famous and commonly used communication protocols in microcontrollers. A standerd data frame transmitted by the microcontroller using its set of rules generally looks like this:
 
 ![image](https://user-images.githubusercontent.com/58588893/180587728-c60b7c7d-016a-4159-b272-26d96e15f873.png)<br>
 
 Let's break down every bit one by one.
 
-| Name       | Function                                                                                                                    |
-| -----------|:---------------------------------------------------------------------------------------------------------------------------:|
-| Idle       | The idle state of the transmitter pin. The HIGH voltage level indicates that no message is being received.                  | 
-| Start      | The start bit notifies the receiving microcontroller that a message is arriving and is indicated by a single low level bit. |
-| D0-D8      | The data bits where we send the data itself. Notice that from D5-D8 the bits are optional.                                  | 
-| P          | Short for parity bit, explained in detail below.                                                                            |
-| Stop       | The stop bit indicates that the message is done transmitting and is indicated by a single high level bit.                   |
-| Baud Rate  | The number of symbols per seconds. Must be agreed upon before starting communication.                                       |  
+| Name       | Function                                                                                                                        |
+| -----------|:-------------------------------------------------------------------------------------------------------------------------------:|
+| Idle       | The idle state of the transmitter pin. The HIGH voltage level indicates that no message is being received.                      | 
+| Start      | The start bit notifies the receiving microcontroller that a message is arriving and is indicated by a single low level bit.     |
+| D0-D8      | The data bits where we send the data itself. Notice that from D5-D8 the bits are optional.                                      | 
+| P          | Short for parity bit, explained in detail below.                                                                                |
+| Stop       | The stop bit indicates that the message is done transmitting and is indicated by a single high level bit. Can be more than one. |
+| Baud Rate  | The number of symbols per seconds. Must be agreed upon before starting communication.                                           |  
 
 ## The parity bit
 
@@ -446,6 +444,64 @@ Notice that there are two types of parity: even parity and odd parity.
 | 1101 0001             | 4        | 0           | 1          |
 | 1111 1111             | 8        | 0           | 1          |
 
+
+## Arduino UART characteresitics
+
+In the `Serial.begin()` function, we specify the baud rate used and there's an extra parameter called `config` where we specify the number of data bits we
+want to transmit per message, if we want even, odd or no parity at all.<br?
+The default configurations is 8-bits of data, no parity bits and 1 start bit.
+
+
+### Sending messages using UART in Arduino
+
+
+```cpp
+
+void setup() {
+  // open the serial port at 9600 bps:
+  Serial.begin(9600);
+  
+  
+void loop() {
+
+// note that they digits and decimal points are converted to their ascii equivalent before sending
+ 
+Serial.println(78);                 //sends "78"
+Serial.println(1.23456);            // sends "1.23" as default is two decimal places
+Serial.println('N');                // sends "N"
+Serial.println("Hello world.");     // sends "Hello world."
+delay(1000);
+ 
+ } 
+  
+ 
+}
+
+```
+
+### Sending messages from laptop to Arduino using UART
+
+
+```cpp
+
+int incomingByte = 0; // for incoming serial data
+
+void setup() {
+  Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
+}
+
+void loop() {
+  // reply only when you receive data:
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    incomingByte = Serial.read();
+
+    // say what you got:
+    Serial.print("I received: ");
+    Serial.println(incomingByte, DEC);
+  }
+
+```
 
 
 
