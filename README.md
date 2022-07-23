@@ -225,13 +225,14 @@ A simple way to decrease the quantization error is to simply increase the resolu
 ## Arduino Specifications
 
 The `Arduino` Uno has a resolution of 10 bits, meaning we approximate our samples relative to 1024 levels.<br>
-The reference voltage, which is the maximum analog voltage that can be measured by the 'ADC' is 5V or 3.3V (depends on board).<br>
+The reference voltage, which is the maximum analog voltage that can be measured by the `ADC` is 5V or 3.3V (depends on board).<br>
 The step size can be calculated as `Reference Voltage / (2^resolution)`.
 
 
 ## Esp32 Specifications
 
-
+The `Esp32` has a resolution of 12 bits, meaning we approximate our sample relative to 4096 levels. <br>
+The reference voltage, which is the maximum analog voltage that can be measured by the `ADC` is 3.3V. <br>
 
 ## Arduino Code
 
@@ -402,10 +403,12 @@ int ledPin = 9;      // LED connected to digital pin 9
 
 void setup() {
   pinMode(ledPin, OUTPUT);  // sets the pin as output
+  pinMode(7, OUTPUT);
 }
 
 void loop() {
   analogWrite(ledPin, 127); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
+  digitalWrite(7, HIGH);    // For comparison
 }
 
 ```
@@ -422,7 +425,6 @@ void setup() {
 
 void loop() {
   analogWrite(ledPin, counter); // Generate a PWM signal with 50% duty cycle, you will observe the LED to be half as bright.
-  delay(100);
 
   if (flag == 0) {
     counter += 1;
@@ -433,7 +435,7 @@ void loop() {
     counter -= 1;
   }
 
-  if (counter == 0 || counter == 256) {
+  if (counter == 0 || counter == 255) {
 
     flag = !flag;
 
@@ -509,7 +511,8 @@ The default configurations is 8-bits of data, no parity bits and 1 start bit.
 void setup() {
   // open the serial port at 9600 bps:
   Serial.begin(9600);
-  
+
+}
   
 void loop() {
 
@@ -517,14 +520,15 @@ void loop() {
  
 Serial.println(78);                 //sends "78"
 Serial.println(1.23456);            // sends "1.23" as default is two decimal places
+Serial.println(1.23456, 5);         // sends "1.23456"
 Serial.println('N');                // sends "N"
 Serial.println("Hello world.");     // sends "Hello world."
-delay(1000);
+delay(5000);
  
- } 
+} 
   
  
-}
+
 
 ```
 
@@ -533,7 +537,7 @@ delay(1000);
 
 ```cpp
 
-int incomingByte = 0; // for incoming serial data
+String incomingString;
 
 void setup() {
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
@@ -542,13 +546,15 @@ void setup() {
 void loop() {
   // reply only when you receive data:
   if (Serial.available() > 0) {
-    // read the incoming byte:
-    incomingByte = Serial.read();
+    // read the incoming string:
+    incomingString = Serial.readStringUntil('\n');
 
     // say what you got:
     Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
+    Serial.println(incomingString);
   }
+
+}  
 
 ```
 
