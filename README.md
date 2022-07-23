@@ -402,7 +402,54 @@ void loop() {
 [Jump back to the top](#table-of-contents)<br>
 ---
 
-# Serial Communication UART
+# Serial Communication Universal Asynchronous Receiver/Transmitter UART
+
+A communication protocol is a way for two different micrcontrollers (or more) to send and receive information from each other and it consists of a set of rules that the microcontrollers must follow.<br>
+There are many types of communication protocols that we use without noticing, like wifi, usb and ethernet and others that are less commonly known
+like UART, SPI, I2C and CAN.
+
+## Serial.begin() & Serial.println()
+
+We noticed that in most of our programs we used these two functions to display values on the debug screen in the `Arduino` IDE.
+What is actually happening is that a serial `UART` communication is being established between your computer and your microcontroller. 
+
+## What is UARt?
+
+`UART` is one of the most famous and commonly used communication protocols in microcontrollers. A standerd data frame transmitted by the microcontroller using its set 
+of rules generally looks like this:
+
+![image](https://user-images.githubusercontent.com/58588893/180587728-c60b7c7d-016a-4159-b272-26d96e15f873.png)<br>
+
+Let's break down every bit one by one.
+
+| Name       | Function                                                                                                                    |
+| -----------|:---------------------------------------------------------------------------------------------------------------------------:|
+| Idle       | The idle state of the transmitter pin. The HIGH voltage level indicates that no message is being received.                  | 
+| Start      | The start bit notifies the receiving microcontroller that a message is arriving and is indicated by a single low level bit. |
+| D0-D8      | The data bits where we send the data itself. Notice that from D5-D8 the bits are optional.                                  | 
+| P          | Short for parity bit, explained in detail below.                                                                            |
+| Stop       | The stop bit indicates that the message is done transmitting and is indicated by a single high level bit.                   |
+| Baud Rate  | The number of symbols per seconds. Must be agreed upon before starting communication.                                       |  
+
+## The parity bit
+
+Communication isn't done under perfect conditions and it is not uncommon for the data sent to be corrupted/changed. While `UART` can't fix
+corrupted messages it can know whether a message was corrupted or not using the parity bit. The transmitting microcontroller counts the number of 1s 
+in the message (data D0-D9) and depending on if the count is even or odd the parity bit is configured. Below are a few examples.<br>
+Notice that there are two types of parity: even parity and odd parity.
+
+
+| 8-bit Data            | 1s count | Even Parity | Odd Parity | 
+| ----------------------|:--------:|:-----------:|:----------:|
+| 0000 0000             | 0        | 0           | 1          |
+| 1010 0001             | 3        | 1           | 0          |
+| 1101 0001             | 4        | 0           | 1          |
+| 1111 1111             | 8        | 0           | 1          |
+
+
+
+
+
 [Jump back to the top](#table-of-contents)<br>
 ---
 
