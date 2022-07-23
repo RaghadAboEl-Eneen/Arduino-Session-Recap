@@ -12,7 +12,7 @@ This is a recap of the Arduino session that is part of Aquaphoton Academy's trai
 **[Timers and millis()](#timers-and-millis)**<br>
 **[Pulse Width Modulation PWM](#pulse-width-modulation-pwm)**<br>
 **[Serial Communication UART](#serial-communication-uart)**<br>
-**[Useful Links](#userful-links)**<br>
+**[Useful Links](#useful-links)**<br>
 <br>
 <br>
 <br>
@@ -564,7 +564,7 @@ void loop() {
 [Jump back to the top](#table-of-contents)<br>
 ---
 
-# Userful Links
+# Useful Links
 [List of microcontrollers supported by `Arduino`](https://github.com/per1234/ino-hardware-package-list/blob/master/ino-hardware-package-list.tsv)
 [Jump back to the top](#table-of-contents)<br>
 ---
