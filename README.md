@@ -166,7 +166,8 @@ void loop() {
   } else {
     digitalWrite(13, HIGH);
   }
-
+  
+}
 
 ```
 
@@ -280,6 +281,8 @@ get the delay we need.<br>
 If we call it in `void setup()` and it returns 100 for example, then we would need to wait for it to reach 1100 in the `void loop()` then we would know that 1 seconds have passed.
 
 
+### millis() with 1 LED
+
 ```cpp
 
 unsigned long start_time;
@@ -288,9 +291,9 @@ int level = LOW;
 
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
-  pinMode(PC13, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   
-  start_time = millis()
+  start_time = millis();
   
 }
 
@@ -305,8 +308,54 @@ void loop() {
        start_time  = current_time;
   }
 
+}
 
 ```
+### millis() with 2 LEDS
+
+```cpp
+
+unsigned long start_time_LED1;
+unsigned long start_time_LED2;
+unsigned long current_time_LED1;
+unsigned long current_time_LED2;
+int level_LED1 = LOW;
+int level_LED2 = LOW;
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(8, OUTPUT);
+  start_time_LED1 = millis();
+  start_time_LED2 = millis();
+  
+}
+
+// the loop function runs over and over again forever
+void loop() {
+
+  current_time_LED1 = millis();
+  current_time_LED2 = millis();
+
+  
+  if( (current_time_LED1 - start_time_LED1) >= 1000 ) {
+       level_LED1 = !level_LED1;
+       digitalWrite(LED_BUILTIN, level_LED1); 
+       start_time_LED1  = current_time_LED1;
+  }
+
+  if( (current_time_LED2 - start_time_LED2) >= 2000 ) {
+       level_LED2 = !level_LED2;
+       digitalWrite(8, level_LED2); 
+       start_time_LED2  = current_time_LED2;
+  }
+
+
+}  
+
+
+
+```
+
 
 
 [Jump back to the top](#table-of-contents)<br>
